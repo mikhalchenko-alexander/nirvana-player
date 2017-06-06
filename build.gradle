@@ -1,0 +1,65 @@
+group 'com.anahoret'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext {
+        kotlin_version = '1.1.2-4'
+        kotlinx_html_version = '0.6.3'
+    }
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.19"
+    }
+}
+
+apply plugin: 'org.jetbrains.kotlin.frontend'
+apply plugin: 'kotlin2js'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:${kotlin_version}"
+    compile "org.jetbrains.kotlinx:kotlinx-html-js:${kotlinx_html_version}"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.outputFile = "$project.buildDir.path/js/${project.name}.js"
+    kotlinOptions.sourceMap = true
+    kotlinOptions.moduleKind = "amd"
+}
+
+kotlinFrontend {
+    npm {
+        devDependency "css-loader"
+        devDependency "style-loader"
+        devDependency "stylus"
+        devDependency "stylus-loader"
+    }
+
+    webpackBundle {
+        bundleName = "nirvanaPlayer"
+        contentPath = file("web")
+        port = 8088
+        
+    }
+}
+
+task copyStylus(type: Copy) {
+    from "$projectDir/stylus/player.styl"
+    into "$projectDir/build/stylus"
+}
+
+bundle.dependsOn(copyStylus)
