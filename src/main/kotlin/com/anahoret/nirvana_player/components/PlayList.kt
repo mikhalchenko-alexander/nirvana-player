@@ -1,4 +1,4 @@
-package com.norby.nirvana_player.components
+package com.anahoret.nirvana_player.components
 
 import kotlinx.html.div
 import kotlinx.html.dom.create

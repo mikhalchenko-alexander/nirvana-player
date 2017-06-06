@@ -1,6 +1,6 @@
-package com.norby.nirvana_player
+package com.anahoret.nirvana_player
 
-import com.norby.nirvana_player.components.Player
+import com.anahoret.nirvana_player.components.Player
 
 fun main(args: Array<String>) {
   js("require('../stylus/player.styl');")
