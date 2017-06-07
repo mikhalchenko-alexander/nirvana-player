@@ -5,6 +5,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.style
 import org.w3c.dom.HTMLElement
+import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
 class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener) {
@@ -44,37 +45,20 @@ class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener)
   }
 
   private fun loadTrackList(playlistUrl: String, onSuccess: (TrackList) -> Unit): Unit {
-    val tnt = TrackList("TNT", emptyArray(),
-      arrayOf(
-        Track("Track 1", "00:03:21", "url1"),
-        Track("Track 2", "00:02:13", "url2"),
-        Track("Track 3", "00:04:54", "url3")
-      ))
+    val xhr = XMLHttpRequest()
+    xhr.open("GET", playlistUrl, true)
+    xhr.send()
 
-    val highVoltage = TrackList("HighVoltage", emptyArray(),
-      arrayOf(
-              Track("Track 1", "00:01:12", "url4"),
-              Track("Track 2", "00:03:33", "url5"),
-              Track("Track 3", "00:02:11", "url6")
-      ))
-    val acdc = TrackList("ACDC", arrayOf(tnt, highVoltage), emptyArray())
-
-
-    onSuccess(acdc)
-//    val xhr = XMLHttpRequest()
-//    xhr.open("GET", playlistUrl, true)
-//    xhr.send()
-//
-//    xhr.onreadystatechange = {
-//      if (xhr.readyState == XMLHttpRequest.DONE) {
-//        if (xhr.status == 200.toShort()) {
-//          val playlist = JSON.parse<TrackList>(xhr.responseText)
-//          onSuccess(playlist)
-//        } else {
-//          println("Error loading playlist. Status ${xhr.status}.")
-//        }
-//      }
-//    }
+    xhr.onreadystatechange = {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        if (xhr.status == 200.toShort()) {
+          val playlist = JSON.parse<TrackList>(xhr.responseText)
+          onSuccess(playlist)
+        } else {
+          println("Error loading playlist. Status ${xhr.status}.")
+        }
+      }
+    }
   }
 
   private class Track(val title: String, val duration: String, val url: String)

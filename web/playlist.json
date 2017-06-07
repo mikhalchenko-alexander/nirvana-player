@@ -1,0 +1,38 @@
+{
+  "name": "ACDC",
+  "folders": [
+    {
+      "name": "High voltage",
+      "folders": [],
+      "tracks": [
+        {
+          "title": "Little Lover",
+          "duration": "00:05:37",
+          "url": "http://acdc/little_lover.mp3"
+        },
+        {
+          "title": "She's Got Balls",
+          "duration": "00:04:51",
+          "url": "http://acdc/shes_got_balls.mp3"
+        }
+      ]
+    },
+    {
+      "name": "TNT",
+      "folders": [],
+      "tracks": [
+        {
+          "title": "It’s a Long Way to the Top (If You Wanna Rock ’n’ Roll)",
+          "duration": "00:05:15",
+          "url": "http://acdc/its_long_way_to_the_top.mp3"
+        },
+        {
+          "title": "Rock ’n’ Roll Singer",
+          "duration": "00:05:04",
+          "url": "http://acdc/rock_n_roll_singer.mp3"
+        }
+      ]
+    }
+  ],
+  "tracks": []
+}
