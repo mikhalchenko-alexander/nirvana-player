@@ -26,7 +26,7 @@ class Controls {
     audio.src = url
 
     trackLabel.clear()
-    trackLabel.appendChild(document.createTextNode(title))
+    trackLabel.appendChild(document.create.span("current-track-title") { +title })
   }
 
 }

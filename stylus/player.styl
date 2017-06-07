@@ -4,10 +4,17 @@
   $playlist_border = 1
 
   .player-controls
-    width   ($player_width + 2 * $playlist_padding + 2 * $playlist_border)px
+    width   ($player_width + 2 * $playlist_padding)px
+    border-left ($playlist_border)px solid black
+    border-right ($playlist_border)px solid black
 
     audio
       width 100%
+      display block
+
+    .current-track-title
+      font-weight bold
+      padding-left 10px
 
   .player-playlist
     border  ($playlist_border)px solid black
