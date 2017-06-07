@@ -13,8 +13,8 @@ class Player: PlayList.TrackClickListener {
     } else {
       val playlistUrl = root.getAttribute("data-playlist-url") ?: ""
       val playList = PlayList(playlistUrl, this)
-      root.appendChild(playList.playlistDiv)
       root.appendChild(controls.controlsDiv)
+      root.appendChild(playList.playlistDiv)
     }
   }
 

@@ -11,13 +11,13 @@ class Controls {
   private val audio = document.create.audio {
     controls = true
   } as HTMLAudioElement
-  private val trackLabel = document.create.div()
+  private val trackLabel = document.create.div("current-track-title")
 
   val controlsDiv = document.create.div("player-controls") {
   }
 
   init {
-    controlsDiv.insertBefore(trackLabel, controlsDiv.firstChild)
+    controlsDiv.appendChild(trackLabel)
     controlsDiv.appendChild(audio)
   }
 
@@ -26,7 +26,7 @@ class Controls {
     audio.src = url
 
     trackLabel.clear()
-    trackLabel.appendChild(document.create.span("current-track-title") { +title })
+    trackLabel.appendChild(document.createTextNode(title))
   }
 
 }

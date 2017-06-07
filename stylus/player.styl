@@ -1,12 +1,13 @@
 #nirvana-player
   $player_width = 500
   $playlist_padding = 5
-  $playlist_border = 1
+  $player_border = 1
+
+  border ($player_border)px solid black
+  width ($player_width + 2 * $playlist_padding)px
 
   .player-controls
     width   ($player_width + 2 * $playlist_padding)px
-    border-left ($playlist_border)px solid black
-    border-right ($playlist_border)px solid black
 
     audio
       width 100%
@@ -17,7 +18,6 @@
       padding-left 10px
 
   .player-playlist
-    border  ($playlist_border)px solid black
     padding ($playlist_padding)px
     display inline-block
     width   ($player_width)px
