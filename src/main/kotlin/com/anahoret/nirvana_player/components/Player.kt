@@ -1,5 +1,8 @@
 package com.anahoret.nirvana_player.components
 
+import kotlinx.html.InputType
+import kotlinx.html.dom.create
+import kotlinx.html.input
 import kotlin.browser.document
 
 class Player: PlayList.TrackClickListener {
@@ -15,6 +18,7 @@ class Player: PlayList.TrackClickListener {
       val playList = PlayList(playlistUrl, this)
       root.appendChild(controls.controlsDiv)
       root.appendChild(playList.playlistDiv)
+      root.appendChild(document.create.input(classes = "slider", type = InputType.range))
     }
   }
 

@@ -58,7 +58,7 @@ kotlinFrontend {
 }
 
 task copyStylus(type: Copy) {
-    from "$projectDir/stylus/player.styl"
+    from fileTree(dir: "$projectDir/stylus", include: "**/*.styl")
     into "$projectDir/build/stylus"
 }
 
