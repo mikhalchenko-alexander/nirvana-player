@@ -29,6 +29,28 @@
   // ==================
 
   //###############
+  // Mixins
+  //###############
+
+  thumb()
+    background $thumb-background
+    border $thumb-border
+    border-radius $thumb-border-radius
+    box-shadow $thumb-box-shadow
+    cursor $thumb-cursor
+    height $thumb-height
+    width $thumb-width
+
+  track()
+    background $track-background
+    border $track-border
+    border-radius $track-border-radius
+    box-shadow $track-box-shadow
+    cursor $track-cursor
+    height $track-height
+    width $track-width
+
+  //###############
   // Common styles
   //###############
 
@@ -48,34 +70,16 @@
   // Webkit
   &::-webkit-slider-thumb
     -webkit-appearance: none
-    background $thumb-background
-    border $thumb-border
-    border-radius $thumb-border-radius
-    box-shadow $thumb-box-shadow
-    cursor $thumb-cursor
-    height $thumb-height
-    margin-top -14px // Only for webkit
-    width $thumb-width
+    margin-top -14px
+    thumb()
 
   // Mozilla
   &::-moz-range-thumb
-    background $thumb-background
-    border $thumb-border
-    border-radius $thumb-border-radius
-    box-shadow $thumb-box-shadow
-    cursor $thumb-cursor
-    height $thumb-height
-    width $thumb-width
+    thumb()
 
   // IE
   &::-ms-thumb
-    background $thumb-background
-    border $thumb-border
-    border-radius $thumb-border-radius
-    box-shadow $thumb-box-shadow
-    cursor $thumb-cursor
-    height $thumb-height
-    width $thumb-width
+    thumb()
 
   //###############
   // Track styles
@@ -83,26 +87,14 @@
 
   // Webkit
   &::-webkit-slider-runnable-track
-    background $track-background
-    border $track-border
-    border-radius $track-border-radius
-    box-shadow $track-box-shadow
-    cursor $track-cursor
-    height $track-height
-    width $track-width
+    track()
 
   &:focus::-webkit-slider-runnable-track
     background $track-background-focus
 
   // Mozilla
   &::-moz-range-track
-    background $track-background
-    border $track-border
-    border-radius $track-border-radius
-    box-shadow $track-box-shadow
-    cursor $track-cursor
-    height $track-height
-    width $track-width
+    track()
 
   &:focus::-moz-range-track
     background $track-background-focus
@@ -119,19 +111,19 @@
     width $track-width
 
   &::-ms-fill-lower
-    background $track-background-ms-lower
+    background $track-background-ms-lower // TODO: check colors for IE
+    border $track-border
+    border-radius $track-border-radius
+    box-shadow $track-box-shadow
+
+  &::-ms-fill-upper
+    background $track-background // TODO: check colors for IE
     border $track-border
     border-radius $track-border-radius
     box-shadow $track-box-shadow
 
   &:focus::-ms-fill-lower
-    background $track-background
-
-  &::-ms-fill-upper
-    background $track-background
-    border $track-border
-    border-radius $track-border-radius
-    box-shadow $track-box-shadow
+    background $track-background // TODO: check colors for IE
 
   &:focus::-ms-fill-upper
-    background $track-background-focus
+    background $track-background-focus // TODO: check colors for IE
