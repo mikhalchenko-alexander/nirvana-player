@@ -1,9 +1,8 @@
 package com.anahoret.nirvana_player.components
 
-import kotlinx.html.div
+import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
-import kotlinx.html.style
 import org.w3c.dom.HTMLElement
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
@@ -13,30 +12,36 @@ class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener)
   val playlistDiv = document.create.div("player-playlist")
 
   init {
-    loadTrackList(trackListUrl) { renderTrackList(it, playlistDiv) }
+    loadTrackList(trackListUrl) { playlistDiv.appendChild(renderTrackList(it)) }
   }
 
-  private fun renderTrackList(trackList: TrackList, root: HTMLElement, margin: Int = 0): Unit {
-    val trackListDiv = document.create.div {
+  fun HTMLElement.toggleClass(cl: String): Unit {
+    if (classList.contains(cl)) { classList.remove(cl) }
+    else { classList.add(cl) }
+  }
+
+  private fun renderTrackList(trackList: TrackList, margin: Int = 0): HTMLElement {
+    val trackListDiv = document.create.div("player-playlist-track-list") { style = "margin-left: ${margin}px" }
+    val trackListNameSpan = document.create.span("track-list-name") { +trackList.name }
+    trackListNameSpan.onclick = { trackListDiv.toggleClass("opened") }
+    trackListDiv.appendChild(trackListNameSpan)
+    trackList.folders?.forEach { trackListDiv.appendChild(renderTrackList(it, margin + 10)) }
+    trackList.tracks?.forEach { trackListDiv.appendChild(renderTrack(it, margin)) }
+
+    return trackListDiv
+  }
+
+  private fun renderTrack(track: Track, margin: Int): HTMLElement {
+    return document.create.div("player-playlist-track") {
       style = "margin-left: ${margin}px"
-      +trackList.name
+
+      attributes["data-track-url"] = track.url
+      attributes["data-track-title"] = track.title
+
+      span("track-title") { +"${track.title} (${track.duration})" }
+
+      onClickFunction = { fireTrackClicked(track.title, track.url, track.duration) }
     }
-    trackList.folders.forEach { renderTrackList(it, trackListDiv, margin + 10) }
-    trackList.tracks.forEach { track ->
-      val trackDiv = document.create.div {
-        style = "margin-left: ${margin}px"
-
-        attributes["data-track-url"] = track.url
-        attributes["data-track-title"] = track.title
-
-        +"${track.title} (${track.duration})"
-
-        onClickFunction = { fireTrackClicked(track.title, track.url, track.duration) }
-      }
-      trackListDiv.appendChild(trackDiv)
-    }
-    root.appendChild(trackListDiv)
-
   }
 
   private fun fireTrackClicked(title: String, url: String, duration: String): Unit {
@@ -62,7 +67,7 @@ class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener)
   }
 
   private class Track(val title: String, val duration: String, val url: String)
-  private class TrackList(val name: String, val folders: Array<TrackList>, val tracks: Array<Track>)
+  private class TrackList(val name: String, val folders: Array<TrackList>?, val tracks: Array<Track>?)
 
   interface TrackClickListener {
     fun onTrackClicked(trackClickEvent: TrackClickEvent): Unit

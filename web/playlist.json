@@ -3,7 +3,6 @@
   "folders": [
     {
       "name": "High voltage",
-      "folders": [],
       "tracks": [
         {
           "title": "Little Lover",
@@ -19,7 +18,6 @@
     },
     {
       "name": "TNT",
-      "folders": [],
       "tracks": [
         {
           "title": "It’s a Long Way to the Top (If You Wanna Rock ’n’ Roll)",
@@ -33,6 +31,5 @@
         }
       ]
     }
-  ],
-  "tracks": []
+  ]
 }
