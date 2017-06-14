@@ -2,7 +2,9 @@ package com.anahoret.nirvana_player.components
 
 import kotlinx.html.*
 import kotlinx.html.dom.create
+import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLAudioElement
+import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.dom.clear
 
@@ -18,7 +20,26 @@ class Controls {
 
   init {
     controlsDiv.appendChild(trackLabel)
-    controlsDiv.appendChild(audio)
+    val controls = renderControls()
+    controlsDiv.appendChild(controls)
+  }
+
+  private fun renderControls(): HTMLElement {
+    val controlsPanel = document.create.div("controls-panel")
+    val playButton = document.create.div("btn btn-play") {
+      +">"
+      onClickFunction = { audio.play() }
+    }
+
+    val pauseButton = document.create.div("btn btn-pause") {
+      +"||"
+      onClickFunction = { audio.pause() }
+    }
+
+    controlsPanel.appendChild(playButton)
+    controlsPanel.appendChild(pauseButton)
+
+    return controlsPanel
   }
 
   fun setTrack(title: String, url: String, duration: String): Unit {

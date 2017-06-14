@@ -1,8 +1,5 @@
 package com.anahoret.nirvana_player.components
 
-import kotlinx.html.InputType
-import kotlinx.html.dom.create
-import kotlinx.html.input
 import kotlin.browser.document
 
 class Player: MediaLibrary.TrackClickListener {
@@ -18,7 +15,6 @@ class Player: MediaLibrary.TrackClickListener {
       val mediaLibrary = MediaLibrary(mediaLibraryUrl, this)
       root.appendChild(controls.controlsDiv)
       root.appendChild(mediaLibrary.mediaLibraryDiv)
-      root.appendChild(document.create.input(classes = "slider", type = InputType.range))
     }
   }
 
