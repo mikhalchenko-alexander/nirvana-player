@@ -5,7 +5,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.input
 import kotlin.browser.document
 
-class Player: PlayList.TrackClickListener {
+class Player: MediaLibrary.TrackClickListener {
 
   private val controls = Controls()
 
@@ -14,15 +14,15 @@ class Player: PlayList.TrackClickListener {
     if (root == null) {
       println("Error. Element with id='#nirvana-player' not found.")
     } else {
-      val playlistUrl = root.getAttribute("data-playlist-url") ?: ""
-      val playList = PlayList(playlistUrl, this)
+      val mediaLibraryUrl = root.getAttribute("data-media-library-url") ?: ""
+      val mediaLibrary = MediaLibrary(mediaLibraryUrl, this)
       root.appendChild(controls.controlsDiv)
-      root.appendChild(playList.playlistDiv)
+      root.appendChild(mediaLibrary.mediaLibraryDiv)
       root.appendChild(document.create.input(classes = "slider", type = InputType.range))
     }
   }
 
-  override fun onTrackClicked(trackClickEvent: PlayList.TrackClickEvent) {
+  override fun onTrackClicked(trackClickEvent: MediaLibrary.TrackClickEvent) {
     controls.setTrack(trackClickEvent.title, trackClickEvent.url, trackClickEvent.duration)
   }
 

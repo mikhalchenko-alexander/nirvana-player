@@ -2,14 +2,14 @@
 
 #nirvana-player
   $player_width = 500
-  $playlist_padding = 5
+  $media_library_padding = 5
   $player_border = 1
 
   border ($player_border)px solid black
-  width ($player_width + 2 * $playlist_padding)px
+  width ($player_width + 2 * $media_library_padding)px
 
   .player-controls
-    width   ($player_width + 2 * $playlist_padding)px
+    width   ($player_width + 2 * $media_library_padding)px
 
     audio
       width 100%
@@ -19,31 +19,31 @@
       font-weight bold
       padding-left 10px
 
-  .player-playlist
-    padding ($playlist_padding)px
+  .player-media-library
+    padding ($media_library_padding)px
     display inline-block
     width   ($player_width)px
 
-    .player-playlist-track-list
+    .player-media-library-folder
       cursor default
       &:before
         content "+"
-      > .player-playlist-track
+      > .player-media-library-track
         display none
-      > .player-playlist-track-list
+      > .player-media-library-folder
         display none
 
       &.opened
         &:before
           content "-"
-        > .player-playlist-track
+        > .player-media-library-track
           display block
-        > .player-playlist-track-list
+        > .player-media-library-folder
           display block
 
-    .track-list-name, .track-title
+    .folder-name, .track-title
       cursor pointer
 
-    .player-playlist-track:last-child
+    .player-media-library-track:last-child
       border-bottom 1px solid darkgray
       margin-bottom 5px

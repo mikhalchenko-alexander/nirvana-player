@@ -7,12 +7,12 @@ import org.w3c.dom.HTMLElement
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
-class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener) {
+class MediaLibrary(mediaLibraryUrl: String, val trackClickListener: TrackClickListener) {
 
-  val playlistDiv = document.create.div("player-playlist")
+  val mediaLibraryDiv = document.create.div("player-media-library")
 
   init {
-    loadTrackList(trackListUrl) { playlistDiv.appendChild(renderTrackList(it)) }
+    loadMediaLibrary(mediaLibraryUrl) { mediaLibraryDiv.appendChild(renderFolder(it)) }
   }
 
   fun HTMLElement.toggleClass(cl: String): Unit {
@@ -20,19 +20,19 @@ class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener)
     else { classList.add(cl) }
   }
 
-  private fun renderTrackList(trackList: TrackList, margin: Int = 0): HTMLElement {
-    val trackListDiv = document.create.div("player-playlist-track-list") { style = "margin-left: ${margin}px" }
-    val trackListNameSpan = document.create.span("track-list-name") { +trackList.name }
-    trackListNameSpan.onclick = { trackListDiv.toggleClass("opened") }
-    trackListDiv.appendChild(trackListNameSpan)
-    trackList.folders?.forEach { trackListDiv.appendChild(renderTrackList(it, margin + 10)) }
-    trackList.tracks?.forEach { trackListDiv.appendChild(renderTrack(it, margin)) }
+  private fun renderFolder(folder: Folder, margin: Int = 0): HTMLElement {
+    val folderDiv = document.create.div("player-media-library-folder") { style = "margin-left: ${margin}px" }
+    val folderNameSpan = document.create.span("folder-name") { +folder.name }
+    folderNameSpan.onclick = { folderDiv.toggleClass("opened") }
+    folderDiv.appendChild(folderNameSpan)
+    folder.folders?.forEach { folderDiv.appendChild(renderFolder(it, margin + 10)) }
+    folder.tracks?.forEach { folderDiv.appendChild(renderTrack(it, margin)) }
 
-    return trackListDiv
+    return folderDiv
   }
 
   private fun renderTrack(track: Track, margin: Int): HTMLElement {
-    return document.create.div("player-playlist-track") {
+    return document.create.div("player-media-library-track") {
       style = "margin-left: ${margin}px"
 
       attributes["data-track-url"] = track.url
@@ -49,25 +49,25 @@ class PlayList(trackListUrl: String, val trackClickListener: TrackClickListener)
     trackClickListener.onTrackClicked(event)
   }
 
-  private fun loadTrackList(playlistUrl: String, onSuccess: (TrackList) -> Unit): Unit {
+  private fun loadMediaLibrary(mediaLibraryUrl: String, onSuccess: (Folder) -> Unit): Unit {
     val xhr = XMLHttpRequest()
-    xhr.open("GET", playlistUrl, true)
+    xhr.open("GET", mediaLibraryUrl, true)
     xhr.send()
 
     xhr.onreadystatechange = {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         if (xhr.status == 200.toShort()) {
-          val playlist = JSON.parse<TrackList>(xhr.responseText)
-          onSuccess(playlist)
+          val folder = JSON.parse<Folder>(xhr.responseText)
+          onSuccess(folder)
         } else {
-          println("Error loading playlist. Status ${xhr.status}.")
+          println("Error loading media library. Status ${xhr.status}.")
         }
       }
     }
   }
 
   private class Track(val title: String, val duration: String, val url: String)
-  private class TrackList(val name: String, val folders: Array<TrackList>?, val tracks: Array<Track>?)
+  private class Folder(val name: String, val folders: Array<Folder>?, val tracks: Array<Track>?)
 
   interface TrackClickListener {
     fun onTrackClicked(trackClickEvent: TrackClickEvent): Unit
