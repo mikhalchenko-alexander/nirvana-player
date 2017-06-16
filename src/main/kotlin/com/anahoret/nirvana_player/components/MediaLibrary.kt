@@ -7,7 +7,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
-class MediaLibrary(mediaLibraryUrl: String, val trackClickListener: TrackClickListener) {
+class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) -> Unit) {
 
   val mediaLibraryDiv = document.create.div("player-media-library")
 
@@ -46,7 +46,7 @@ class MediaLibrary(mediaLibraryUrl: String, val trackClickListener: TrackClickLi
 
   private fun fireTrackClicked(title: String, url: String, duration: String): Unit {
     val event = TrackClickEvent(title, duration, url)
-    trackClickListener.onTrackClicked(event)
+    onTrackClick(event)
   }
 
   private fun loadMediaLibrary(mediaLibraryUrl: String, onSuccess: (Folder) -> Unit): Unit {
@@ -68,10 +68,6 @@ class MediaLibrary(mediaLibraryUrl: String, val trackClickListener: TrackClickLi
 
   private class Track(val title: String, val duration: String, val url: String)
   private class Folder(val name: String, val folders: Array<Folder>?, val tracks: Array<Track>?)
-
-  interface TrackClickListener {
-    fun onTrackClicked(trackClickEvent: TrackClickEvent): Unit
-  }
 
   class TrackClickEvent(val title: String, val duration: String, val url: String)
 

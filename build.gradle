@@ -43,6 +43,8 @@ compileKotlin2Js {
 
 kotlinFrontend {
     npm {
+        dependency "nouislider"
+
         devDependency "css-loader"
         devDependency "style-loader"
         devDependency "stylus"
@@ -53,13 +55,5 @@ kotlinFrontend {
         bundleName = "nirvanaPlayer"
         contentPath = file("web")
         port = 8088
-        
     }
 }
-
-task copyStylus(type: Copy) {
-    from fileTree(dir: "$projectDir/stylus", include: "**/*.styl")
-    into "$projectDir/build/stylus"
-}
-
-bundle.dependsOn(copyStylus)

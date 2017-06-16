@@ -39,6 +39,10 @@ class Controls {
     controlsPanel.appendChild(playButton)
     controlsPanel.appendChild(pauseButton)
 
+    val volumeControl = document.create.div()
+    controlsPanel.appendChild(volumeControl)
+    NoUiSlider(volumeControl, NoUiSlider.Options(0.0, 1.0, 0.01), { audio.volume = it })
+
     return controlsPanel
   }
 

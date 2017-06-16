@@ -2,7 +2,7 @@ package com.anahoret.nirvana_player.components
 
 import kotlin.browser.document
 
-class Player: MediaLibrary.TrackClickListener {
+class Player {
 
   private val controls = Controls()
 
@@ -12,14 +12,10 @@ class Player: MediaLibrary.TrackClickListener {
       println("Error. Element with id='#nirvana-player' not found.")
     } else {
       val mediaLibraryUrl = root.getAttribute("data-media-library-url") ?: ""
-      val mediaLibrary = MediaLibrary(mediaLibraryUrl, this)
+      val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.title, it.url, it.duration) })
       root.appendChild(controls.controlsDiv)
       root.appendChild(mediaLibrary.mediaLibraryDiv)
     }
-  }
-
-  override fun onTrackClicked(trackClickEvent: MediaLibrary.TrackClickEvent) {
-    controls.setTrack(trackClickEvent.title, trackClickEvent.url, trackClickEvent.duration)
   }
 
 }
