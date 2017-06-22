@@ -1,5 +1,7 @@
 package com.anahoret.nirvana_player.components
 
+import com.anahoret.nirvana_player.model.Folder
+import com.anahoret.nirvana_player.model.Track
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
@@ -15,7 +17,7 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
     loadMediaLibrary(mediaLibraryUrl) { mediaLibraryDiv.appendChild(renderFolder(it)) }
   }
 
-  fun HTMLElement.toggleClass(cl: String): Unit {
+  private fun HTMLElement.toggleClass(cl: String): Unit {
     if (classList.contains(cl)) { classList.remove(cl) }
     else { classList.add(cl) }
   }
@@ -40,12 +42,12 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
 
       span("track-title") { +"${track.title} (${track.duration})" }
 
-      onClickFunction = { fireTrackClicked(track.title, track.url, track.duration) }
+      onClickFunction = { fireTrackClicked(track) }
     }
   }
 
-  private fun fireTrackClicked(title: String, url: String, duration: String): Unit {
-    val event = TrackClickEvent(title, duration, url)
+  private fun fireTrackClicked(track: Track): Unit {
+    val event = TrackClickEvent(track)
     onTrackClick(event)
   }
 
@@ -66,9 +68,6 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
     }
   }
 
-  private class Track(val title: String, val duration: String, val url: String)
-  private class Folder(val name: String, val folders: Array<Folder>?, val tracks: Array<Track>?)
-
-  class TrackClickEvent(val title: String, val duration: String, val url: String)
+  class TrackClickEvent(val track: Track)
 
 }

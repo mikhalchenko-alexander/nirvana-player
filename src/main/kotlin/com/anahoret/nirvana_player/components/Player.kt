@@ -12,7 +12,7 @@ class Player {
       println("Error. Element with id='#nirvana-player' not found.")
     } else {
       val mediaLibraryUrl = root.getAttribute("data-media-library-url") ?: ""
-      val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.title, it.url, it.duration) })
+      val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.track) })
       root.appendChild(controls.controlsDiv)
       root.appendChild(mediaLibrary.mediaLibraryDiv)
     }

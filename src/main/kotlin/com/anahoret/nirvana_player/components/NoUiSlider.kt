@@ -2,10 +2,12 @@ package com.anahoret.nirvana_player.components
 
 import org.w3c.dom.Element
 
-class NoUiSlider(element: Element, options: Options, onValueChange: (Double) -> Unit) {
+class NoUiSlider(private val element: Element, options: Options, onValueChange: (Double) -> Unit) {
+
+  private var dragging = false
 
   companion object {
-    val noUiSlider = js("require('nouislider/distribute/nouislider.js');")
+    val noUiSlider: dynamic = js("require('nouislider/distribute/nouislider.js');")
     init {
       js("require('nouislider/distribute/nouislider.css');")
     }
@@ -14,11 +16,17 @@ class NoUiSlider(element: Element, options: Options, onValueChange: (Double) -> 
   init {
     noUiSlider.create(element, options)
 
-    element.asDynamic().noUiSlider.on("update", {
+    element.asDynamic().noUiSlider.on("change", {
       val value = element.asDynamic().noUiSlider.get().unsafeCast<Double>()
       onValueChange(value)
-      println(value)
     })
+
+    element.asDynamic().noUiSlider.on("start", { dragging = true }.asDynamic())
+    element.asDynamic().noUiSlider.on("end", { dragging = false }.asDynamic())
+  }
+
+  fun setMaxValue(maxValue: Double): Unit {
+    element.asDynamic().noUiSlider.updateOptions(Options(0.0, maxValue, 0.1, 0.0))
   }
 
   class Options(
@@ -32,5 +40,11 @@ class NoUiSlider(element: Element, options: Options, onValueChange: (Double) -> 
 
   class Range(val min: Double,
               val max: Double)
+
+  fun setValue(currentTime: Double): Unit {
+    if (!dragging) {
+      element.asDynamic().noUiSlider.set(currentTime)
+    }
+  }
 
 }
