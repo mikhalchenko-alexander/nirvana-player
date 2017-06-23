@@ -6,8 +6,10 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLAudioElement
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.clear
+import kotlin.js.Math
 
 class Controls {
 
@@ -45,12 +47,24 @@ class Controls {
     controlsPanel.appendChild(volumeControl)
     NoUiSlider(volumeControl, NoUiSlider.Options(min = 0.0, max = 1.0, step = 0.01, start = 1.0), { audio.volume = it })
 
+    val timeSpan = document.create.span { +"00:00:00" }
+    controlsPanel.appendChild(timeSpan)
     val timeControl = document.create.div()
     controlsPanel.appendChild(timeControl)
     timeSlider = TimeSlider(timeControl, NoUiSlider.Options(min = 0.0, max = 0.1, step = 0.1), { audio.currentTime = it })
 
-    audio.ontimeupdate = { timeSlider.setValue(audio.currentTime) }
-
+    audio.ontimeupdate = { _: Event ->
+      val currentTime = audio.currentTime
+      val timeString =
+        listOf(
+          Math.floor(currentTime / 3600),
+          Math.floor(currentTime % 3600 / 60),
+          Math.floor(currentTime % 60))
+          .map { if (it < 10) "0$it" else "$it" }
+          .joinToString(":")
+      timeSpan.innerHTML = timeString
+      timeSlider.setValue(currentTime)
+    }
     return controlsPanel
   }
 
