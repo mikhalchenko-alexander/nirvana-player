@@ -1,4 +1,4 @@
-config.resolve.modules.push("/Users/aam/Documents/idea_projects/home_nirvana/nirvana-player/stylus");
+config.resolve.modules.push("stylus");
 
 config.module.rules.push(
   { test: /\.styl$/,
