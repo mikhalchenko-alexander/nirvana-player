@@ -1,6 +1,6 @@
 requirejs.config({
     paths: {
-        nirvana: 'nirvanaPlayer.bundle'
+        nirvana: '../build/bundle/nirvanaPlayer.bundle'
     }
 });
 
