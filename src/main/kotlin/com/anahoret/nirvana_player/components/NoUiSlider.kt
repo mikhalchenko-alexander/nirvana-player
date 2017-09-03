@@ -1,10 +1,13 @@
 package com.anahoret.nirvana_player.components
 
-import org.w3c.dom.Element
+import kotlin.browser.document
+import kotlinx.html.dom.create
+import kotlinx.html.*
 
-class NoUiSlider(private val element: Element, options: Options, onValueChange: (Double) -> Unit) {
+open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): PlayerComponent() {
 
   private var dragging = false
+  override val element = document.create.div()
 
   companion object {
     val noUiSlider: dynamic = js("require('nouislider/distribute/nouislider.js');")

@@ -9,12 +9,12 @@ import org.w3c.dom.HTMLElement
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
-class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) -> Unit) {
+class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) -> Unit): PlayerComponent() {
 
-  val mediaLibraryDiv = document.create.div("player-media-library")
+  override val element = document.create.div("player-media-library")
 
   init {
-    loadMediaLibrary(mediaLibraryUrl) { mediaLibraryDiv.appendChild(renderFolder(it)) }
+    loadMediaLibrary(mediaLibraryUrl) { element.appendChild(renderFolder(it)) }
   }
 
   private fun HTMLElement.toggleClass(cl: String): Unit {

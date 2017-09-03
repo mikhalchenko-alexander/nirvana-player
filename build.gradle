@@ -53,7 +53,7 @@ kotlinFrontend {
 
     webpackBundle {
         bundleName = "nirvanaPlayer"
-        contentPath = file("web")
+        contentPath = file(".")
         port = 8088
     }
 }

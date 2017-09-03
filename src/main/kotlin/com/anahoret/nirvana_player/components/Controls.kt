@@ -11,7 +11,7 @@ import kotlin.browser.document
 import kotlin.dom.clear
 import kotlin.js.Math
 
-class Controls {
+class Controls: PlayerComponent() {
 
   private val audio = document.create.audio {
     controls = true
@@ -19,13 +19,13 @@ class Controls {
   private val trackLabel = document.create.div("current-track-title")
   private lateinit var timeSlider: TimeSlider
 
-  val controlsDiv = document.create.div("player-controls") {
+  override val element = document.create.div("player-controls") {
   }
 
   init {
-    controlsDiv.appendChild(trackLabel)
+    element.appendChild(trackLabel)
     val controls = renderControls()
-    controlsDiv.appendChild(controls)
+    element.appendChild(controls)
   }
 
   private fun renderControls(): HTMLElement {
@@ -43,15 +43,13 @@ class Controls {
     controlsPanel.appendChild(playButton)
     controlsPanel.appendChild(pauseButton)
 
-    val volumeControl = document.create.div()
+    val volumeControl = VolumeSlider(audio)
     controlsPanel.appendChild(volumeControl)
-    NoUiSlider(volumeControl, NoUiSlider.Options(min = 0.0, max = 1.0, step = 0.01, start = 1.0), { audio.volume = it })
 
     val timeSpan = document.create.span { +"00:00:00" }
+    timeSlider = TimeSlider(audio)
     controlsPanel.appendChild(timeSpan)
-    val timeControl = document.create.div()
-    controlsPanel.appendChild(timeControl)
-    timeSlider = TimeSlider(timeControl, NoUiSlider.Options(min = 0.0, max = 0.1, step = 0.1), { audio.currentTime = it })
+    controlsPanel.appendChild(timeSlider)
 
     audio.ontimeupdate = { _: Event ->
       val currentTime = audio.currentTime
