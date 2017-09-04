@@ -13,14 +13,11 @@ import kotlin.js.Math
 
 class Controls : AbstractComponent() {
 
-  private val audio = document.create.audio {
-    controls = true
-  } as HTMLAudioElement
+  private val audio = document.create.audio() as HTMLAudioElement
   private val trackLabel = document.create.div("current-trackDto-title")
   private lateinit var timeSlider: TimeSlider
 
-  override val element = document.create.div("player-controls") {
-  }
+  override val element = document.create.div("player-controls")
 
   init {
     element.appendChild(trackLabel)
