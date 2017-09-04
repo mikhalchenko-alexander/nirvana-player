@@ -11,7 +11,7 @@ class Player {
     } else {
       val controls = Controls()
       val mediaLibraryUrl = root.getAttribute("data-media-library-url") ?: ""
-      val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.track) })
+      val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.trackDto) })
       root.appendChild(controls)
       root.appendChild(mediaLibrary)
     }

@@ -1,6 +1,6 @@
 package com.anahoret.nirvana_player.components
 
-import com.anahoret.nirvana_player.model.Track
+import com.anahoret.nirvana_player.model.TrackDto
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
@@ -11,12 +11,12 @@ import kotlin.browser.document
 import kotlin.dom.clear
 import kotlin.js.Math
 
-class Controls: PlayerComponent() {
+class Controls : AbstractComponent() {
 
   private val audio = document.create.audio {
     controls = true
   } as HTMLAudioElement
-  private val trackLabel = document.create.div("current-track-title")
+  private val trackLabel = document.create.div("current-trackDto-title")
   private lateinit var timeSlider: TimeSlider
 
   override val element = document.create.div("player-controls") {
@@ -66,14 +66,14 @@ class Controls: PlayerComponent() {
     return controlsPanel
   }
 
-  fun setTrack(track: Track): Unit {
+  fun setTrack(trackDto: TrackDto) {
     audio.pause()
-    audio.src = track.url
+    audio.src = trackDto.url
 
     trackLabel.clear()
-    trackLabel.appendChild(document.createTextNode(track.title))
+    trackLabel.appendChild(document.createTextNode(trackDto.title))
 
-    timeSlider.setMaxTime(track.duration)
+    timeSlider.setMaxTime(trackDto.duration)
   }
 
 }

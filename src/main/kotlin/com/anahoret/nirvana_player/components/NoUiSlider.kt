@@ -4,10 +4,10 @@ import kotlin.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.*
 
-open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): PlayerComponent() {
+open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): AbstractComponent() {
 
   private var dragging = false
-  override val element = document.create.div()
+  override final val element = document.create.div()
 
   companion object {
     val noUiSlider: dynamic = js("require('nouislider/distribute/nouislider.js');")
@@ -28,7 +28,7 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Player
     element.asDynamic().noUiSlider.on("end", { dragging = false }.asDynamic())
   }
 
-  fun setMaxValue(maxValue: Double): Unit {
+  fun setMaxValue(maxValue: Double) {
     element.asDynamic().noUiSlider.updateOptions(Options(0.0, maxValue, 0.1, 0.0))
   }
 
@@ -44,7 +44,7 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Player
   class Range(val min: Double,
               val max: Double)
 
-  fun setValue(currentTime: Double): Unit {
+  fun setValue(currentTime: Double) {
     if (!dragging) {
       element.asDynamic().noUiSlider.set(currentTime)
     }

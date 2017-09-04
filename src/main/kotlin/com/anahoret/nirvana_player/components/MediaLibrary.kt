@@ -1,7 +1,7 @@
 package com.anahoret.nirvana_player.components
 
-import com.anahoret.nirvana_player.model.Folder
-import com.anahoret.nirvana_player.model.Track
+import com.anahoret.nirvana_player.model.FolderDto
+import com.anahoret.nirvana_player.model.TrackDto
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
@@ -9,7 +9,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
-class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) -> Unit): PlayerComponent() {
+class MediaLibrary(mediaLibraryUrl: String, private val onTrackClick: (TrackClickEvent) -> Unit): AbstractComponent() {
 
   override val element = document.create.div("player-media-library")
 
@@ -22,36 +22,36 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
     else { classList.add(cl) }
   }
 
-  private fun renderFolder(folder: Folder, margin: Int = 0): HTMLElement {
-    val folderDiv = document.create.div("player-media-library-folder") { style = "margin-left: ${margin}px" }
-    val folderNameSpan = document.create.span("folder-name") { +folder.name }
+  private fun renderFolder(folderDto: FolderDto, margin: Int = 0): HTMLElement {
+    val folderDiv = document.create.div("player-media-library-folderDto") { style = "margin-left: ${margin}px" }
+    val folderNameSpan = document.create.span("folderDto-name") { +folderDto.name }
     folderNameSpan.onclick = { folderDiv.toggleClass("opened") }
     folderDiv.appendChild(folderNameSpan)
-    folder.folders?.forEach { folderDiv.appendChild(renderFolder(it, margin + 10)) }
-    folder.tracks?.forEach { folderDiv.appendChild(renderTrack(it, margin)) }
+    folderDto.folderDtos?.forEach { folderDiv.appendChild(renderFolder(it, margin + 10)) }
+    folderDto.trackDtos?.forEach { folderDiv.appendChild(renderTrack(it, margin)) }
 
     return folderDiv
   }
 
-  private fun renderTrack(track: Track, margin: Int): HTMLElement {
-    return document.create.div("player-media-library-track") {
+  private fun renderTrack(trackDto: TrackDto, margin: Int): HTMLElement {
+    return document.create.div("player-media-library-trackDto") {
       style = "margin-left: ${margin}px"
 
-      attributes["data-track-url"] = track.url
-      attributes["data-track-title"] = track.title
+      attributes["data-trackDto-url"] = trackDto.url
+      attributes["data-trackDto-title"] = trackDto.title
 
-      span("track-title") { +"${track.title} (${track.duration})" }
+      span("trackDto-title") { +"${trackDto.title} (${trackDto.duration})" }
 
-      onClickFunction = { fireTrackClicked(track) }
+      onClickFunction = { fireTrackClicked(trackDto) }
     }
   }
 
-  private fun fireTrackClicked(track: Track): Unit {
-    val event = TrackClickEvent(track)
+  private fun fireTrackClicked(trackDto: TrackDto): Unit {
+    val event = TrackClickEvent(trackDto)
     onTrackClick(event)
   }
 
-  private fun loadMediaLibrary(mediaLibraryUrl: String, onSuccess: (Folder) -> Unit): Unit {
+  private fun loadMediaLibrary(mediaLibraryUrl: String, onSuccess: (FolderDto) -> Unit): Unit {
     val xhr = XMLHttpRequest()
     xhr.open("GET", mediaLibraryUrl, true)
     xhr.send()
@@ -59,7 +59,7 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
     xhr.onreadystatechange = {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         if (xhr.status == 200.toShort()) {
-          val folder = JSON.parse<Folder>(xhr.responseText)
+          val folder = JSON.parse<FolderDto>(xhr.responseText)
           onSuccess(folder)
         } else {
           println("Error loading media library. Status ${xhr.status}.")
@@ -68,6 +68,6 @@ class MediaLibrary(mediaLibraryUrl: String, val onTrackClick: (TrackClickEvent) 
     }
   }
 
-  class TrackClickEvent(val track: Track)
+  class TrackClickEvent(val trackDto: TrackDto)
 
 }
