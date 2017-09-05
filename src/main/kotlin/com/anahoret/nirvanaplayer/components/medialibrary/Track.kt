@@ -1,6 +1,7 @@
-package com.anahoret.nirvana_player.components
+package com.anahoret.nirvanaplayer.components.medialibrary
 
-import com.anahoret.nirvana_player.model.TrackDto
+import com.anahoret.nirvanaplayer.components.AbstractComponent
+import com.anahoret.nirvanaplayer.model.TrackDto
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction

@@ -1,6 +1,8 @@
-package com.anahoret.nirvana_player.components
+package com.anahoret.nirvanaplayer.components.medialibrary
 
-import com.anahoret.nirvana_player.model.FolderDto
+import com.anahoret.nirvanaplayer.components.AbstractComponent
+import com.anahoret.nirvanaplayer.components.appendChild
+import com.anahoret.nirvanaplayer.model.FolderDto
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import org.w3c.xhr.XMLHttpRequest

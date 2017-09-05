@@ -1,8 +1,10 @@
-package com.anahoret.nirvana_player.components
+package com.anahoret.nirvanaplayer.components
 
 import kotlin.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.*
+import kotlinx.html.js.onClickFunction
+import org.w3c.dom.get
 
 open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): AbstractComponent() {
 
@@ -26,6 +28,14 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Abstra
 
     element.asDynamic().noUiSlider.on("start", { dragging = true }.asDynamic())
     element.asDynamic().noUiSlider.on("end", { dragging = false }.asDynamic())
+
+    val btn = document.create.div {
+      onClickFunction = { setMaxValue(3000.0) }
+      +"Click!"
+    }
+    println("INIT " + this::class.js)
+    document.getElementsByName("body").get(0)?.appendChild(btn)
+    println("=============")
   }
 
   fun setMaxValue(maxValue: Double) {
@@ -44,9 +54,9 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Abstra
   class Range(val min: Double,
               val max: Double)
 
-  fun setValue(currentTime: Double) {
+  fun setValue(value: Double) {
     if (!dragging) {
-      element.asDynamic().noUiSlider.set(currentTime)
+      element.asDynamic().noUiSlider.set(value)
     }
   }
 

@@ -1,4 +1,4 @@
-package com.anahoret.nirvana_player.components
+package com.anahoret.nirvanaplayer.components
 
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
