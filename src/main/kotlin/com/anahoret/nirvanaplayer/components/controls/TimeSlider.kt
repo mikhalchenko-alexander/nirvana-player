@@ -4,7 +4,6 @@ import com.anahoret.nirvanaplayer.components.NoUiSlider
 
 class TimeSlider(audio: Audio):
   NoUiSlider(
-    options = Options(min = 0.0, max = 0.1, step = 0.1),
     onValueChange = { audio.setCurrentTime(it) }) {
 
   fun setMaxTime(maxTime: String) {
