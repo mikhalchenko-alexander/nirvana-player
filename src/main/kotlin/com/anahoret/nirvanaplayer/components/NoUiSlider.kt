@@ -8,6 +8,7 @@ import com.anahoret.nirvanaplayer.common.require
 open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): AbstractComponent() {
   private var dragging = false
   override final val element = document.create.div()
+  private val slider: dynamic
 
   companion object {
     val noUiSlider: dynamic = require("nouislider/distribute/nouislider.js")
@@ -18,18 +19,23 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Abstra
 
   init {
     noUiSlider.create(element, options)
+    slider = element.asDynamic().noUiSlider
 
-    element.asDynamic().noUiSlider.on("change", {
-      val value = element.asDynamic().noUiSlider.get().unsafeCast<Double>()
+    on("change", {
+      val value = slider.get().unsafeCast<Double>()
       onValueChange(value)
     })
 
-    element.asDynamic().noUiSlider.on("start", { dragging = true }.asDynamic())
-    element.asDynamic().noUiSlider.on("end", { dragging = false }.asDynamic())
+    on("start", { dragging = true })
+    on("end", { dragging = false })
+  }
+
+  private fun on(event: String, body: () -> Unit) {
+    slider.on(event, body)
   }
 
   fun setMaxValue(maxValue: Double) {
-    element.asDynamic().noUiSlider.updateOptions(Options(0.0, maxValue, 0.1, 0.0))
+    slider.updateOptions(Options(0.0, maxValue, 0.1, 0.0))
   }
 
   class Options(
@@ -46,7 +52,7 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Abstra
 
   fun setValue(value: Double) {
     if (!dragging) {
-      element.asDynamic().noUiSlider.set(value)
+      slider.set(value)
     }
   }
 
