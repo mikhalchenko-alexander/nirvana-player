@@ -28,14 +28,6 @@ open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): Abstra
 
     element.asDynamic().noUiSlider.on("start", { dragging = true }.asDynamic())
     element.asDynamic().noUiSlider.on("end", { dragging = false }.asDynamic())
-
-    val btn = document.create.div {
-      onClickFunction = { setMaxValue(3000.0) }
-      +"Click!"
-    }
-    println("INIT " + this::class.js)
-    document.getElementsByName("body").get(0)?.appendChild(btn)
-    println("=============")
   }
 
   fun setMaxValue(maxValue: Double) {
