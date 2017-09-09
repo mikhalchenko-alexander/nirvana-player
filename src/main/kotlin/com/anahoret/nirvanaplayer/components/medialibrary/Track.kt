@@ -7,7 +7,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
 import kotlin.browser.document
 
-class Track(trackDto: TrackDto, margin: Int, private val onTrackClick: (TrackClickEvent) -> Unit): AbstractComponent() {
+class Track(trackDto: TrackDto, margin: Int): AbstractComponent() {
 
   override val element = document.create.div("player-media-library-track") {
     style = "margin-left: ${margin}px"
@@ -18,11 +18,20 @@ class Track(trackDto: TrackDto, margin: Int, private val onTrackClick: (TrackCli
     span("track-title") { +"${trackDto.title} (${trackDto.duration})" }
 
     onClickFunction = {
-      val event = TrackClickEvent(trackDto)
-      onTrackClick(event)
+      fireTrackClickedEvent(TrackClickEvent(trackDto))
     }
   }
 
+  private val trackClickListeners = ArrayList<(Track.TrackClickEvent) -> Unit>()
+
   class TrackClickEvent(val trackDto: TrackDto)
+
+  fun addTrackClickListener(l: (Track.TrackClickEvent) -> Unit) {
+    trackClickListeners.add(l)
+  }
+
+  private fun fireTrackClickedEvent(event: Track.TrackClickEvent) {
+    trackClickListeners.forEach { it(event) }
+  }
 
 }

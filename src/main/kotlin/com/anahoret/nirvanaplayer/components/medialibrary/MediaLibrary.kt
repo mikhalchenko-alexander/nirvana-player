@@ -8,12 +8,22 @@ import kotlinx.html.dom.create
 import org.w3c.xhr.XMLHttpRequest
 import kotlin.browser.document
 
-class MediaLibrary(mediaLibraryUrl: String, private val onTrackClick: (Track.TrackClickEvent) -> Unit): AbstractComponent() {
+class MediaLibrary(mediaLibraryUrl: String): AbstractComponent() {
 
   override val element = document.create.div("player-media-library")
 
+  private val trackClickListeners = ArrayList<(Track.TrackClickEvent) -> Unit>()
+
   init {
-    loadMediaLibrary(mediaLibraryUrl) { element.appendChild(Folder(it, 0, onTrackClick)) }
+    loadMediaLibrary(mediaLibraryUrl) {
+      val folder = Folder(it, 0)
+      folder.addTrackClickListener(this::fireTrackClickedEvent)
+      element.appendChild(folder)
+    }
+  }
+
+  fun addTrackClickListener(l: (Track.TrackClickEvent) -> Unit) {
+    trackClickListeners.add(l)
   }
 
   private fun loadMediaLibrary(mediaLibraryUrl: String, onSuccess: (FolderDto) -> Unit) {
@@ -31,6 +41,10 @@ class MediaLibrary(mediaLibraryUrl: String, private val onTrackClick: (Track.Tra
         }
       }
     }
+  }
+
+  private fun fireTrackClickedEvent(event: Track.TrackClickEvent) {
+    trackClickListeners.forEach { it(event) }
   }
 
 }
