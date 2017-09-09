@@ -17,12 +17,11 @@ class TimeLabel: TextLabel() {
 
   fun setTime(time: Double) {
     val timeString =
-            listOf(
-                    Math.floor(time / 3600),
-                    Math.floor(time % 3600 / 60),
-                    Math.floor(time % 60))
-                    .map { if (it < 10) "0$it" else "$it" }
-                    .joinToString(":")
+      listOf(
+        Math.floor(time / 3600),
+        Math.floor(time % 3600 / 60),
+        Math.floor(time % 60)
+      ).joinToString(":") { if (it < 10) "0$it" else "$it" }
     setText(timeString)
   }
 }
