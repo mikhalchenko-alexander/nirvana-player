@@ -16,22 +16,25 @@ class Track(trackDto: TrackDto, margin: Int): AbstractComponent() {
     attributes["data-track-title"] = trackDto.title
 
     span("track-title") { +"${trackDto.title} (${trackDto.duration})" }
-
-    onClickFunction = {
-      fireTrackClickedEvent(TrackClickEvent(trackDto))
+    span {
+      +"==>"
+      
+      onClickFunction = {
+        fireTrackPlaylistButtonClickEvent(TrackPlaylistButtonClickEvent(trackDto))
+      }
     }
   }
 
-  private val trackClickListeners = ArrayList<(Track.TrackClickEvent) -> Unit>()
+  private val trackPlaylistButtonClickListeners = ArrayList<(Track.TrackPlaylistButtonClickEvent) -> Unit>()
 
-  class TrackClickEvent(val trackDto: TrackDto)
+  class TrackPlaylistButtonClickEvent(val trackDto: TrackDto)
 
-  fun addTrackClickListener(l: (Track.TrackClickEvent) -> Unit) {
-    trackClickListeners.add(l)
+  fun addTrackPlaylistButtonClickListener(l: (Track.TrackPlaylistButtonClickEvent) -> Unit) {
+    trackPlaylistButtonClickListeners.add(l)
   }
 
-  private fun fireTrackClickedEvent(event: Track.TrackClickEvent) {
-    trackClickListeners.forEach { it(event) }
+  private fun fireTrackPlaylistButtonClickEvent(event: Track.TrackPlaylistButtonClickEvent) {
+    trackPlaylistButtonClickListeners.forEach { it(event) }
   }
 
 }

@@ -7,5 +7,6 @@ abstract class AbstractComponent {
   abstract val element: HTMLElement
 
   fun appendChild(child: AbstractComponent) { element.appendChild(child) }
+  fun removeChild(child: AbstractComponent) { element.removeChild(child.element) }
 
 }

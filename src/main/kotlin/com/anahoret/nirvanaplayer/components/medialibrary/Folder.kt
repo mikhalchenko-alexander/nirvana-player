@@ -16,7 +16,7 @@ class Folder(folderDto: FolderDto, margin: Int): AbstractComponent() {
   override val element: HTMLElement =
     document.create.div("player-media-library-folder") { style = "margin-left: ${margin}px" }
 
-  private val trackClickListeners = ArrayList<(Track.TrackClickEvent) -> Unit>()
+  private val trackPlaylistButtonClickListeners = ArrayList<(Track.TrackPlaylistButtonClickEvent) -> Unit>()
 
   init {
     val folderNameSpan = document.create.span("folder-name") { +folderDto.name }
@@ -24,22 +24,22 @@ class Folder(folderDto: FolderDto, margin: Int): AbstractComponent() {
     element.appendChild(folderNameSpan)
     folderDto.folders?.forEach {
       val folder = Folder(it, margin + 10)
-      folder.addTrackClickListener(this::fireTrackClickedEvent)
+      folder.addTrackPlaylistButtonClickListener(this::fireTrackPlaylistButtonClickEvent)
       element.appendChild(folder)
     }
     folderDto.tracks?.forEach {
       val track = Track(it, margin)
-      track.addTrackClickListener(this::fireTrackClickedEvent)
+      track.addTrackPlaylistButtonClickListener(this::fireTrackPlaylistButtonClickEvent)
       element.appendChild(track)
     }
   }
 
-  fun addTrackClickListener(l: (Track.TrackClickEvent) -> Unit) {
-    trackClickListeners.add(l)
+  fun addTrackPlaylistButtonClickListener(l: (Track.TrackPlaylistButtonClickEvent) -> Unit) {
+    trackPlaylistButtonClickListeners.add(l)
   }
 
-  private fun fireTrackClickedEvent(event: Track.TrackClickEvent) {
-    trackClickListeners.forEach { it(event) }
+  private fun fireTrackPlaylistButtonClickEvent(event: Track.TrackPlaylistButtonClickEvent) {
+    trackPlaylistButtonClickListeners.forEach { it(event) }
   }
 
 }

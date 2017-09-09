@@ -17,8 +17,9 @@ class Player {
       val mediaLibraryUrl = root.getAttribute("data-media-library-url") ?: ""
       val controls = ControlsPanel()
       val mediaLibrary = MediaLibrary(mediaLibraryUrl)
-      mediaLibrary.addTrackClickListener { controls.setTrack(it.trackDto) }
       val playList = PlayList()
+      playList.addTrackClickListener { controls.setTrack(it.trackDto) }
+      mediaLibrary.addTrackPlaylistButtonClickListener { playList.addTrack(it.trackDto) }
 
       val container = document.create.div("player-container")
       val leftBlock = document.create.div("player-left-block")
