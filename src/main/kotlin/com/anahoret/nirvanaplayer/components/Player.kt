@@ -3,7 +3,9 @@ package com.anahoret.nirvanaplayer.components
 import com.anahoret.nirvanaplayer.components.controls.ControlsPanel
 import com.anahoret.nirvanaplayer.components.medialibrary.MediaLibrary
 import com.anahoret.nirvanaplayer.components.playlist.PlayList
+import kotlinx.html.div
 import kotlin.browser.document
+import kotlinx.html.dom.create
 
 class Player {
 
@@ -16,9 +18,18 @@ class Player {
       val controls = ControlsPanel()
       val mediaLibrary = MediaLibrary(mediaLibraryUrl, { controls.setTrack(it.trackDto) })
       val playList = PlayList()
-      root.appendChild(controls)
-      root.appendChild(mediaLibrary)
-      root.appendChild(playList)
+
+      val container = document.create.div("player-container")
+      val leftBlock = document.create.div("player-left-block")
+      val rightBlock = document.create.div("player-right-block")
+      container.appendChild(leftBlock)
+      container.appendChild(rightBlock)
+
+      leftBlock.appendChild(controls)
+      leftBlock.appendChild(mediaLibrary)
+      rightBlock.appendChild(playList)
+
+      root.append(container)
     }
   }
 
