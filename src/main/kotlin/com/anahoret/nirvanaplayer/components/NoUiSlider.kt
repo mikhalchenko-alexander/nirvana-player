@@ -3,18 +3,16 @@ package com.anahoret.nirvanaplayer.components
 import kotlin.browser.document
 import kotlinx.html.dom.create
 import kotlinx.html.*
-import kotlinx.html.js.onClickFunction
-import org.w3c.dom.get
+import com.anahoret.nirvanaplayer.common.require
 
 open class NoUiSlider(options: Options, onValueChange: (Double) -> Unit): AbstractComponent() {
-
   private var dragging = false
   override final val element = document.create.div()
 
   companion object {
-    val noUiSlider: dynamic = js("require('nouislider/distribute/nouislider.js');")
+    val noUiSlider: dynamic = require("nouislider/distribute/nouislider.js")
     init {
-      js("require('nouislider/distribute/nouislider.css');")
+      require("nouislider/distribute/nouislider.css")
     }
   }
 

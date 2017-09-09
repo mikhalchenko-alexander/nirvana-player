@@ -3,6 +3,6 @@ package com.anahoret.nirvanaplayer
 import com.anahoret.nirvanaplayer.components.Player
 
 fun main(args: Array<String>) {
-  js("require('player.styl');")
+  com.anahoret.nirvanaplayer.common.require("player.styl")
   Player()
 }
