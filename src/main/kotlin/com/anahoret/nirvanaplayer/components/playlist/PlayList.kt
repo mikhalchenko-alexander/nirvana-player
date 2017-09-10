@@ -1,6 +1,7 @@
 package com.anahoret.nirvanaplayer.components.playlist
 
 import com.anahoret.nirvanaplayer.components.AbstractComponent
+import com.anahoret.nirvanaplayer.model.FolderDto
 import com.anahoret.nirvanaplayer.model.TrackDto
 import kotlinx.html.dom.create
 import kotlinx.html.*
@@ -24,6 +25,11 @@ class PlayList : AbstractComponent() {
       appendChild(track)
       tracks.add(trackDto)
     }
+  }
+
+  fun addFolder(folderDto: FolderDto) {
+    folderDto.folders?.forEach(this::addFolder)
+    folderDto.tracks?.forEach(this::addTrack)
   }
 
   fun addTrackClickListener(l: (Track.TrackClickEvent) -> Unit) {

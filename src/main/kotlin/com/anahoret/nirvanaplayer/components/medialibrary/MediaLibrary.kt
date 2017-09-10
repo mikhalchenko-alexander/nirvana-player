@@ -13,11 +13,13 @@ class MediaLibrary(mediaLibraryUrl: String): AbstractComponent() {
   override val element = document.create.div("player-media-library")
 
   private val trackPlaylistButtonClickListeners = ArrayList<(Track.TrackPlaylistButtonClickEvent) -> Unit>()
+  private val folderPlaylistButtonClickListeners = ArrayList<(Folder.FolderPlaylistButtonClickEvent) -> Unit>()
 
   init {
     loadMediaLibrary(mediaLibraryUrl) {
       val folder = Folder(it, 0)
       folder.addTrackPlaylistButtonClickListener(this::fireTrackPlaylistButtonClickEvent)
+      folder.addFolderPlaylistButtonClickListener(this::fireFolderPlaylistButtonClickEvent)
       element.appendChild(folder)
     }
   }
@@ -37,6 +39,14 @@ class MediaLibrary(mediaLibraryUrl: String): AbstractComponent() {
         }
       }
     }
+  }
+
+  fun addFolderPlaylistButtonClickListener(l: (Folder.FolderPlaylistButtonClickEvent) -> Unit) {
+    folderPlaylistButtonClickListeners.add(l)
+  }
+
+  private fun fireFolderPlaylistButtonClickEvent(event: Folder.FolderPlaylistButtonClickEvent) {
+    folderPlaylistButtonClickListeners.forEach { it(event) }
   }
 
   fun addTrackPlaylistButtonClickListener(l: (Track.TrackPlaylistButtonClickEvent) -> Unit) {

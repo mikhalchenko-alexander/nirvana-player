@@ -17,7 +17,7 @@ class Track(trackDto: TrackDto, margin: Int): AbstractComponent() {
 
     span("track-title") { +"${trackDto.title} (${trackDto.duration})" }
     span {
-      +"==>"
+      +"=>"
       
       onClickFunction = {
         fireTrackPlaylistButtonClickEvent(TrackPlaylistButtonClickEvent(trackDto))
