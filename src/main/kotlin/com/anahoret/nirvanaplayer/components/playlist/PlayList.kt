@@ -12,19 +12,31 @@ class PlayList : AbstractComponent() {
   override val element = document.create.div("player-playlist")
 
   private val trackClickListeners = ArrayList<(Track.TrackClickEvent) -> Unit>()
-  private val tracks = ArrayList<TrackDto>()
+  private val tracks = ArrayList<Track>()
+  private var activeTrack: Track? = null
 
   fun addTrack(trackDto: TrackDto) {
-    if (!tracks.contains(trackDto)) {
+    if (tracks.find { it.trackDto == trackDto } == null) {
       val track = Track(trackDto, 0)
-      track.addTrackClickListener(this::fireTrackClickEvent)
+      track.addTrackClickListener { event ->
+        activeTrack = track
+        fireTrackClickEvent(event)
+      }
       track.addTrackRemoveButtonClickListener {
         removeChild(track)
-        tracks.remove(trackDto)
+        tracks.remove(track)
       }
       appendChild(track)
-      tracks.add(trackDto)
+      tracks.add(track)
     }
+  }
+
+  fun nextTrack(): TrackDto? {
+    val nextTrackIndex = tracks.indexOf(activeTrack)
+    return if (nextTrackIndex < tracks.size - 1) {
+      activeTrack = tracks[nextTrackIndex + 1]
+      activeTrack?.trackDto
+    } else null
   }
 
   fun addFolder(folderDto: FolderDto) {

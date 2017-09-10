@@ -10,6 +10,14 @@ import kotlin.browser.document
 class Audio: AbstractComponent() {
   override val element = document.create.audio() as HTMLAudioElement
 
+  private val trackEndedListeners = ArrayList<() -> Unit>()
+
+  init {
+    element.onended = {
+      fireTrackEnded()
+    }
+  }
+
   fun play() = element.play()
   fun pause() = element.pause()
   fun onTimeUpdate(f: (Event) -> dynamic) {
@@ -19,4 +27,12 @@ class Audio: AbstractComponent() {
   fun setSrc(src: String) { element.src = src }
   fun setVolume(volume: Double) { element.volume = volume }
   fun setCurrentTime(time: Double) { element.currentTime = time }
+
+  fun addTrackEndedListener(l: () -> Unit) {
+    trackEndedListeners.add(l)
+  }
+
+  private fun fireTrackEnded() {
+    trackEndedListeners.forEach { it.invoke() }
+  }
 }

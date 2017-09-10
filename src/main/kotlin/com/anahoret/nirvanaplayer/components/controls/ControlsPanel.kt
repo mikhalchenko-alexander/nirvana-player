@@ -27,4 +27,10 @@ class ControlsPanel: AbstractComponent() {
     timeSlider.setMaxTime(trackDto.duration)
   }
 
+  fun addTrackEndedListener(l: () -> Unit) {
+    audio.addTrackEndedListener(l)
+  }
+
+  fun play() = audio.play()
+
 }

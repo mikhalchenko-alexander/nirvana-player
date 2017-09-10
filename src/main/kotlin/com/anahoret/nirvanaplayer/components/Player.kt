@@ -21,6 +21,14 @@ class Player {
       playList.addTrackClickListener { controls.setTrack(it.trackDto) }
       mediaLibrary.addTrackPlaylistButtonClickListener { playList.addTrack(it.trackDto) }
       mediaLibrary.addFolderPlaylistButtonClickListener { playList.addFolder(it.folderDto) }
+      controls.addTrackEndedListener {
+        val nextTrack = playList.nextTrack()
+        if (nextTrack != null) {
+          controls.setTrack(nextTrack)
+          controls.play()
+        }
+      }
+
 
       val container = document.create.div("player-container")
       val leftBlock = document.create.div("player-left-block")

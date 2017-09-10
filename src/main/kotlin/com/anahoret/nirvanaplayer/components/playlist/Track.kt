@@ -7,7 +7,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.onClickFunction
 import kotlin.browser.document
 
-class Track(trackDto: TrackDto, margin: Int): AbstractComponent() {
+class Track(val trackDto: TrackDto, margin: Int): AbstractComponent() {
 
   override val element = document.create.div("player-media-library-track") {
     style = "margin-left: ${margin}px"
